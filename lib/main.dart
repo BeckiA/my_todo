@@ -51,32 +51,32 @@ class _HomePageState extends State<HomePage> {
   final labelController = TextEditingController();
 
   final List<Tasks> _userTasks = [
-    Tasks(
-        id: '1',
-        title: 'Finishing My Project',
-        lable: 'Task 1',
-        date: DateTime.now()),
-    Tasks(
-        id: '2',
-        title: 'Finishing the course',
-        lable: 'Task 2',
-        date: DateTime.now())
+    // Tasks(
+    //     id: '1',
+    //     title: 'Finishing My Project',
+    //     lable: 'Task 1',
+    //     date: DateTime.now()),
+    // Tasks(
+    //     id: '2',
+    //     title: 'Finishing the course',
+    //     lable: 'Task 2',
+    //     date: DateTime.now())
   ];
 
   List<Tasks> get _recentTasks {
     return _userTasks.where((tx) {
-      return tx.date.isAfter(DateTime.now().subtract(
+      return tx.date.isBefore(DateTime.now().add(
         const Duration(days: 7),
       ));
     }).toList();
   }
 
-  void _addNewTasks(String tasksTitle, String tasksLabel) {
+  void _addNewTasks(String tasksTitle, String tasksLabel, DateTime inputDate) {
     final newTasks = Tasks(
         id: DateTime.now().toString(),
         title: tasksTitle,
         lable: tasksLabel,
-        date: DateTime.now());
+        date: inputDate);
     setState(() {
       _userTasks.add(newTasks);
     });
@@ -94,6 +94,12 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
+  void _deleteTasks(String id) {
+    setState(() {
+      _userTasks.removeWhere((taski) => taski.id == id);
+    });
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -105,9 +111,13 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: SingleChildScrollView(
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [Chart(_recentTasks), TasksList(_userTasks)]),
+        child:
+            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          Chart(
+            _recentTasks,
+          ),
+          TasksList(_userTasks, _deleteTasks)
+        ]),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(

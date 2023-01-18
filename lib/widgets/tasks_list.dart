@@ -4,8 +4,9 @@ import '../models/tasks.dart';
 
 class TasksList extends StatelessWidget {
   final List<Tasks> tasks;
+  final Function deleteTasks;
 
-  TasksList(this.tasks);
+  TasksList(this.tasks, this.deleteTasks);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -17,7 +18,7 @@ class TasksList extends StatelessWidget {
                     'You have no tasks in your todo yet!',
                     style: Theme.of(context).textTheme.headline6,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Container(
@@ -32,42 +33,35 @@ class TasksList extends StatelessWidget {
             : ListView.builder(
                 itemBuilder: (context, index) {
                   return Card(
-                      child: Row(
-                    children: <Widget>[
-                      Container(
-                        margin: const EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 15,
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                              width: 2, color: Theme.of(context).primaryColor),
-                          // borderRadius: BorderRadius.circular(10)
-                        ),
-                        padding: const EdgeInsets.all(10),
-                        child: Text(
-                          tasks[index].lable,
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).primaryColor),
-                        ),
+                      elevation: 5,
+                      margin: const EdgeInsets.symmetric(
+                        vertical: 8,
+                        horizontal: 5,
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            tasks[index].title,
-                            style: Theme.of(context).textTheme.headline6,
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          radius: 30,
+                          child: Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: FittedBox(child: Text(tasks[index].lable)),
                           ),
-                          Text(
-                            DateFormat.yMMMd().format(tasks[index].date),
-                            style: TextStyle(color: Colors.grey),
-                          )
-                        ],
-                      )
-                    ],
-                  ));
+                        ),
+                        title: Text(
+                          tasks[index].title,
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                        subtitle:
+                            Text(DateFormat.yMMMd().format(tasks[index].date)),
+                        trailing: IconButton(
+                          icon: Icon(
+                            Icons.delete,
+                            color: Theme.of(context).errorColor,
+                          ),
+                          onPressed: (() {
+                            deleteTasks(tasks[index].id);
+                          }),
+                        ),
+                      ));
                 },
                 itemCount: tasks.length));
   }
