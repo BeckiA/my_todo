@@ -1,6 +1,6 @@
 # my_todo
 
-A new Flutter project.
+My Todo is an interactive Todo list app built using Flutter for making our day today life easier.
 
 ## Getting Started
 
