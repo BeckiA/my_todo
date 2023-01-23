@@ -10,26 +10,27 @@ class TasksList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 300,
         child: tasks.isEmpty
-            ? Column(
-                children: <Widget>[
-                  Text(
-                    'You have no tasks in your todo yet!',
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    height: 200,
-                    child: Image.asset(
-                      'assets/images/waiting.png',
-                      fit: BoxFit.cover,
+            ? LayoutBuilder(builder: ((ctx, constraints) {
+                return Column(
+                  children: <Widget>[
+                    Text(
+                      'You have no tasks in your todo yet!',
+                      style: Theme.of(context).textTheme.headline6,
                     ),
-                  )
-                ],
-              )
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      height: constraints.maxHeight * 0.6,
+                      child: Image.asset(
+                        'assets/images/waiting.png',
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  ],
+                );
+              }))
             : ListView.builder(
                 itemBuilder: (context, index) {
                   return Card(
@@ -52,15 +53,25 @@ class TasksList extends StatelessWidget {
                         ),
                         subtitle:
                             Text(DateFormat.yMMMd().format(tasks[index].date)),
-                        trailing: IconButton(
-                          icon: Icon(
-                            Icons.delete,
-                            color: Theme.of(context).errorColor,
-                          ),
-                          onPressed: (() {
-                            deleteTasks(tasks[index].id);
-                          }),
-                        ),
+                        trailing: MediaQuery.of(context).size.width > 460
+                            ? TextButton.icon(
+                                onPressed: (() {
+                                  deleteTasks(tasks[index].id);
+                                }),
+                                icon: const Icon(Icons.delete),
+                                style: TextButton.styleFrom(
+                                  foregroundColor: Colors.red,
+                                ),
+                                label: const Text("Delete"))
+                            : IconButton(
+                                icon: Icon(
+                                  Icons.delete,
+                                  color: Theme.of(context).errorColor,
+                                ),
+                                onPressed: (() {
+                                  deleteTasks(tasks[index].id);
+                                }),
+                              ),
                       ));
                 },
                 itemCount: tasks.length));

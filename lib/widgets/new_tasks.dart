@@ -46,56 +46,63 @@ class _NewTasksState extends State<NewTasks> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      child: Container(
-          padding: EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: "Title",
-                ),
-                // onChanged: (value) {
-                //   titleValue = value;
-                // },
-                controller: titleController,
-                onSubmitted: ((_) => submitData()),
-              ),
-              TextField(
+    return SingleChildScrollView(
+      child: Card(
+        elevation: 5,
+        child: Container(
+            padding: EdgeInsets.only(
+              top: 10,
+              left: 10,
+              right: 10,
+              bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                TextField(
                   decoration: const InputDecoration(
-                    labelText: "Label",
+                    labelText: "Title",
                   ),
-                  controller: labelController,
-                  onSubmitted: ((_) => submitData()
-                      // onChanged: (value) => labelValue = value,
-                      )),
-              Row(
-                children: [
-                  Expanded(
-                      child: Text(_selectedDate == null
-                          ? "No date chosen"
-                          : 'Picked date: ${DateFormat.yMd().format(_selectedDate!)}')),
-                  TextButton(
-                      onPressed: _presentDatePicker,
-                      child: const Text(
-                        'Choose a date',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )),
-                ],
-              ),
-              ElevatedButton(
-                child: Text('Add Transaction'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).primaryColor,
+                  // onChanged: (value) {
+                  //   titleValue = value;
+                  // },
+                  controller: titleController,
+                  onSubmitted: ((_) => submitData()),
                 ),
-                onPressed: () {
-                  submitData();
-                },
-              ),
-            ],
-          )),
+                TextField(
+                    decoration: const InputDecoration(
+                      labelText: "Label",
+                    ),
+                    controller: labelController,
+                    onSubmitted: ((_) => submitData()
+                        // onChanged: (value) => labelValue = value,
+                        )),
+                Row(
+                  children: [
+                    Expanded(
+                        child: Text(_selectedDate == null
+                            ? "No date chosen"
+                            : 'Picked date: ${DateFormat.yMd().format(_selectedDate!)}')),
+                    TextButton(
+                        onPressed: _presentDatePicker,
+                        child: const Text(
+                          'Choose a date',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )),
+                  ],
+                ),
+                ElevatedButton(
+                  child: Text('Add Transaction'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).primaryColor,
+                  ),
+                  onPressed: () {
+                    submitData();
+                  },
+                ),
+              ],
+            )),
+      ),
     );
   }
 }

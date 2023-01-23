@@ -29,8 +29,8 @@ class Chart extends StatelessWidget {
   }
 
   double get totalTasksAvailable {
-    return groupedTransactionValues.fold(0.0, (sum, item) {
-      return sum + (item['tasks'] as double);
+    return groupedTransactionValues.fold(0, (sum, item) {
+      return sum + (item['tasks'] as int);
     });
   }
 
@@ -50,9 +50,9 @@ class Chart extends StatelessWidget {
                 child: ChartBar(
                     info['day'] as String,
                     info['tasks'] as int,
-                    totalTasksAvailable == 0.0
-                        ? 0.0
-                        : (info['tasks'] as double) / totalTasksAvailable),
+                    totalTasksAvailable == 0
+                        ? 0
+                        : (info['tasks'] as int) / totalTasksAvailable),
               );
             }).toList()),
       ),
